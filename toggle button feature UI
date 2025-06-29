@@ -1,0 +1,138 @@
+import React, { useState } from 'react';
+import { Leaf, Info } from 'lucide-react';
+
+const CarbonOffsetToggle = () => {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  
+  const carbonFee = 15; // ₹15 as example between 10-20
+  const estimatedEmission = 2.3; // kg CO2 example
+  
+  const handleToggle = () => {
+    setIsEnabled(!isEnabled);
+  };
+  
+  const openModal = () => {
+    setShowModal(true);
+  };
+  
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <div className="max-w-md mx-auto p-6 bg-white">
+      {/* Carbon Offset Toggle Section */}
+      <div className="border border-green-200 rounded-lg p-4 bg-green-50">
+        <div className="flex items-start justify-between">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0 mt-1">
+              <Leaf className="w-5 h-5 text-green-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                Carbon Neutral Delivery
+              </h3>
+              <p className="text-xs text-gray-600 mb-2">
+                Offset your delivery's carbon footprint
+              </p>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-medium text-green-700">
+                  +₹{carbonFee}
+                </span>
+                <button 
+                  onClick={openModal}
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Toggle Switch */}
+          <div className="flex-shrink-0">
+            <button
+              onClick={handleToggle}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
+                isEnabled 
+                  ? 'bg-green-600' 
+                  : 'bg-gray-300'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                  isEnabled ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+        
+        {isEnabled && (
+          <div className="mt-3 p-2 bg-green-100 rounded border border-green-200">
+            <p className="text-xs text-green-800">
+              ✓ Your delivery will be carbon neutral! You'll earn green points and help the environment.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-sm w-full p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Carbon Offset Details</h2>
+              <button 
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Leaf className="w-5 h-5 text-green-600" />
+                <span className="text-sm font-medium">Why Carbon Offset?</span>
+              </div>
+              
+              <div className="text-sm text-gray-600 space-y-2">
+                <p>Your delivery will produce approximately <strong>{estimatedEmission} kg CO2</strong></p>
+                <p>By choosing eco-friendly alternatives, this emission could be reduced by 40%</p>
+                <p>The ₹{carbonFee} fee will be used to:</p>
+                <ul className="list-disc list-inside ml-2 space-y-1">
+                  <li>Plant trees</li>
+                  <li>Support renewable energy projects</li>
+                  <li>Fund carbon capture initiatives</li>
+                </ul>
+                <p className="text-green-700 font-medium">You'll earn carbon points and climb the green leaderboard!</p>
+              </div>
+              
+              <div className="flex space-x-3 pt-4">
+                <button
+                  onClick={closeModal}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    setIsEnabled(true);
+                    closeModal();
+                  }}
+                  className="flex-1 px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700"
+                >
+                  Enable Offset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CarbonOffsetToggle;
